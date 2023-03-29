@@ -3,7 +3,6 @@ module florianbgt/medusa
 go 1.19
 
 require (
-	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.9.0
 	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1
 	github.com/stretchr/testify v1.8.2
