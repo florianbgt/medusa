@@ -3,8 +3,8 @@ package handlers_test
 import (
 	"bytes"
 	"encoding/json"
-	"florianbgt/medusa-api/medusa/settings"
-	test "florianbgt/medusa-api/medusa/test"
+	"florianbgt/medusa/internal/configs"
+	test "florianbgt/medusa/test"
 	http "net/http"
 	httptest "net/http/httptest"
 	testing "testing"
@@ -27,7 +27,7 @@ func TestLoginRoute(t *testing.T) {
 	t.Run("login endpoint returns token", func(t *testing.T) {
 		w := httptest.NewRecorder()
 
-		password := settings.SetupSettings().PASSWORD
+		password := configs.SetupConfigs().PASSWORD
 		body := get_body(password)
 
 		req, _ := http.NewRequest("POST", route, body)

@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"florianbgt/medusa-api/medusa/helpers"
-	settings "florianbgt/medusa-api/medusa/settings"
+	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/helpers"
 	fmt "fmt"
 	http "net/http"
 
@@ -17,7 +17,7 @@ type payload struct {
 func Login(
 	c *gin.Context,
 	db *gorm.DB,
-	settings *settings.Settings,
+	configs *configs.Configs,
 ) {
 	var payload payload
 	err := c.ShouldBindJSON(&payload)
@@ -28,14 +28,14 @@ func Login(
 		return
 	}
 
-	if payload.Password != settings.PASSWORD {
+	if payload.Password != configs.PASSWORD {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "unauthorized",
 		})
 		return
 	}
 
-	tokenString, err := helpers.GenerateToken(settings.API_KEY, settings.TOKEN_EXPIRATION)
+	tokenString, err := helpers.GenerateToken(configs.API_KEY, configs.TOKEN_EXPIRATION)
 
 	if err != nil {
 		c.JSON(500, gin.H{

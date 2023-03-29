@@ -1,7 +1,7 @@
 package handlers_test
 
 import (
-	test "florianbgt/medusa-api/medusa/test"
+	test "florianbgt/medusa/test"
 	http "net/http"
 	httptest "net/http/httptest"
 	testing "testing"

@@ -1,4 +1,4 @@
-package settings
+package configs
 
 import (
 	"os"
@@ -27,16 +27,16 @@ func getEnvInt(key string, fallback int) int {
 	}
 }
 
-type Settings struct {
+type Configs struct {
 	API_KEY          string
 	PASSWORD         string
 	TOKEN_EXPIRATION int // in seconds
 	SQLITE_FILE_PATH string
 }
 
-func SetupSettings() *Settings {
-	return &Settings{
-		API_KEY:          getEnvString("API_KEY", "change-pon-prod"),
+func SetupConfigs() *Configs {
+	return &Configs{
+		API_KEY:          getEnvString("API_KEY", "change-on-prod"),
 		PASSWORD:         getEnvString("PASSWORD", "password"),
 		TOKEN_EXPIRATION: getEnvInt("TOKEN_EXPIRATION", 60*60),
 		SQLITE_FILE_PATH: getEnvString("SQLITE_FILE_PATH", "app.db"),

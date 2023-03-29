@@ -1,7 +1,7 @@
 package helpers_test
 
 import (
-	"florianbgt/medusa-api/medusa/helpers"
+	"florianbgt/medusa/internal/helpers"
 	testing "testing"
 
 	assert "github.com/stretchr/testify/assert"
