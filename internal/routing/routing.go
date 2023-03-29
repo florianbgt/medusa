@@ -2,11 +2,11 @@ package routing
 
 import (
 	"florianbgt/medusa/internal/configs"
-	handlers "florianbgt/medusa/internal/handlers"
+	"florianbgt/medusa/internal/handlers"
 	"florianbgt/medusa/internal/helpers"
 
-	gin "github.com/gin-gonic/gin"
-	gorm "gorm.io/gorm"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {

@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"florianbgt/medusa/internal/configs"
-	test "florianbgt/medusa/test"
-	http "net/http"
-	httptest "net/http/httptest"
-	testing "testing"
+	"florianbgt/medusa/test"
+	"net/http"
+	"net/http/httptest"
+	"testing"
 
-	assert "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func get_body(password string) *bytes.Buffer {

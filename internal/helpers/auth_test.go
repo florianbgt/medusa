@@ -2,9 +2,9 @@ package helpers_test
 
 import (
 	"florianbgt/medusa/internal/helpers"
-	testing "testing"
+	"testing"
 
-	assert "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGenerateToken(t *testing.T) {

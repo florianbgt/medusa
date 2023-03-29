@@ -3,11 +3,11 @@ package handlers
 import (
 	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/helpers"
-	fmt "fmt"
-	http "net/http"
+	"fmt"
+	"net/http"
 
-	gin "github.com/gin-gonic/gin"
-	gorm "gorm.io/gorm"
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type payload struct {

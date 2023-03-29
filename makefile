@@ -9,10 +9,10 @@ compile:
 
 run:
 	go build -o ${output_dir} ${entry_point}
-	bin/medusa
+	${output_dir}
 
 dev:
 	go run ${entry_point}
 
-test:
+tests:
 	go test -count=1 -v ${testpackage}

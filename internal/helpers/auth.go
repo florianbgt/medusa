@@ -1,13 +1,13 @@
 package helpers
 
 import (
-	errors "errors"
-	http "net/http"
-	strings "strings"
-	time "time"
+	"errors"
+	"net/http"
+	"strings"
+	"time"
 
-	gin "github.com/gin-gonic/gin"
-	jwt "github.com/golang-jwt/jwt/v5"
+	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func GenerateToken(api_key string, expiration int) (string, error) {

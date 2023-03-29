@@ -1,10 +1,10 @@
 package test
 
 import (
-	configs "florianbgt/medusa/internal/configs"
-	routing "florianbgt/medusa/internal/routing"
+	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/routing"
 
-	gin "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

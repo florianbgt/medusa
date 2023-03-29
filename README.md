@@ -1,3 +1,3 @@
-# MEDISA-API
+# MEDISA
 
-Medusa API
+Medusa

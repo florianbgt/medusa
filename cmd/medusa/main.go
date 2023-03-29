@@ -1,8 +1,8 @@
 package main
 
 import (
-	configs "florianbgt/medusa/internal/configs"
-	db "florianbgt/medusa/internal/db"
+	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/db"
 	"florianbgt/medusa/internal/routing"
 )
 

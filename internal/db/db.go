@@ -1,10 +1,10 @@
 package db
 
 import (
-	fmt "fmt"
+	"fmt"
 
-	sqlite "gorm.io/driver/sqlite"
-	gorm "gorm.io/gorm"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func SetupDb(path string) *gorm.DB {
