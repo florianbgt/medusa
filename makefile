@@ -1,18 +1,21 @@
-default: run
+api_output_dir = bin/medusa
+api_entry_point = cmd/medusa/main.go
+api_test_package = ./...
 
-output_dir = bin/medusa
-entry_point = cmd/medusa/main.go
-testpackage = ./...
+web_package = ./web
 
-compile:
-	go build -o ${output_dir} ${entry_point}
+api-compile:
+	go build -o ${api_output_dir} ${api_entry_point}
 
-run:
-	go build -o ${output_dir} ${entry_point}
-	${output_dir}
+api-run:
+	go build -o ${api_output_dir} ${api_entry_point}
+	${api_output_dir}
 
-dev:
-	go run ${entry_point}
+api-dev:
+	go run ${api_entry_point}
 
-tests:
-	go test -count=1 -v ${testpackage}
+api-test:
+	go test -count=1 -v ${api_test_package}
+
+app-dev:
+	yarn --cwd ${web_package} dev
