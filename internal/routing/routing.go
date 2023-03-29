@@ -5,12 +5,16 @@ import (
 	"florianbgt/medusa/internal/handlers"
 	"florianbgt/medusa/internal/helpers"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router := gin.Default()
+
+	// Serve static files from website folder (static website)
+	router.Use(static.Serve("/", static.LocalFile("./website", false)))
 
 	isAuthenticated := func(c *gin.Context) {
 		helpers.IsAuthCheck(c, configs.API_KEY)
