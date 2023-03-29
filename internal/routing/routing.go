@@ -26,7 +26,7 @@ func spaMiddleware() gin.HandlerFunc {
 
 		file_extention := filepath.Ext(c.Request.URL.Path)
 		if file_extention == "" && c.Request.URL.Path != "/" {
-			c.Request.URL.Path = strings.Replace(c.Request.URL.Path, c.Request.URL.Path, c.Request.URL.Path+".html", 1)
+			c.Request.URL.Path = c.Request.URL.Path + ".html"
 		}
 
 		fmt.Println(filepath.Ext(c.Request.URL.Path))
