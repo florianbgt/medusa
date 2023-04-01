@@ -13,10 +13,10 @@ app-dev:
 	yarn --cwd ${web_package} dev
 
 
-server-build:
+server-build:app-build
 	go build -o ${api_output_dir} ${api_entry_point}
 
-server-run: app-build server-build
+server-run: server-build
 	${api_output_dir}
 
 server-dev:
