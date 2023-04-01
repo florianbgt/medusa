@@ -25,7 +25,7 @@ func spaMiddleware() gin.HandlerFunc {
 			c.Request.URL.Path = c.Request.URL.Path + ".html"
 		}
 
-		directory := http.FileSystem(http.Dir("./website"))
+		directory := http.FileSystem(http.Dir("./web/out"))
 		file_server := http.FileServer(directory)
 
 		file_server.ServeHTTP(c.Writer, c.Request)
