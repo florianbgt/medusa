@@ -4,7 +4,6 @@ import (
 	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/handlers"
 	"florianbgt/medusa/internal/helpers"
-	"fmt"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -21,15 +20,13 @@ func spaMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		directory := http.FileSystem(http.Dir("./website"))
-		file_server := http.FileServer(directory)
-
 		file_extention := filepath.Ext(c.Request.URL.Path)
 		if file_extention == "" && c.Request.URL.Path != "/" {
 			c.Request.URL.Path = c.Request.URL.Path + ".html"
 		}
 
-		fmt.Println(filepath.Ext(c.Request.URL.Path))
+		directory := http.FileSystem(http.Dir("./website"))
+		file_server := http.FileServer(directory)
 
 		file_server.ServeHTTP(c.Writer, c.Request)
 		c.Abort()
