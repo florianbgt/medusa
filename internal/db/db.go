@@ -1,23 +1,21 @@
 package db
 
 import (
-	"fmt"
+	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/models"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-func SetupDb(path string) *gorm.DB {
+func SetupDb(path string, configs *configs.Configs) *gorm.DB {
 	db, err := gorm.Open(sqlite.Open(path), &gorm.Config{})
 
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	fmt.Println("Connected to database")
-
-	// fmt.Println("Migrating User model...")
-	// db.AutoMigrate(models.User{})
+	models.SetupPassword(db, configs.DEFAULT_PASSWORD)
 
 	return db
 }

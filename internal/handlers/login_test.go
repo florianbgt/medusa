@@ -27,7 +27,7 @@ func TestLoginRoute(t *testing.T) {
 	t.Run("login endpoint returns token", func(t *testing.T) {
 		w := httptest.NewRecorder()
 
-		password := configs.SetupConfigs().PASSWORD
+		password := configs.SetupConfigs().DEFAULT_PASSWORD
 		body := get_body(password)
 
 		req, _ := http.NewRequest("POST", route, body)

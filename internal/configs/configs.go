@@ -28,16 +28,18 @@ func getEnvInt(key string, fallback int) int {
 }
 
 type Configs struct {
+	PORT             string
 	API_KEY          string
-	PASSWORD         string
+	DEFAULT_PASSWORD string
 	TOKEN_EXPIRATION int // in seconds
 	SQLITE_FILE_PATH string
 }
 
 func SetupConfigs() *Configs {
 	return &Configs{
+		PORT:             getEnvString("PORT", "8080"),
 		API_KEY:          getEnvString("API_KEY", "change-on-prod"),
-		PASSWORD:         getEnvString("PASSWORD", "password"),
+		DEFAULT_PASSWORD: getEnvString("PASSWORD", "Password/123"),
 		TOKEN_EXPIRATION: getEnvInt("TOKEN_EXPIRATION", 60*60),
 		SQLITE_FILE_PATH: getEnvString("SQLITE_FILE_PATH", "app.db"),
 	}
