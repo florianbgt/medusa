@@ -7,16 +7,14 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func Login(
+func RefreshToken(
 	c *gin.Context,
-	db *gorm.DB,
 	configs *configs.Configs,
 ) {
 	var payload struct {
-		Password string `json:"password" binding:"required"`
+		Refresh string `json:"refresh" binding:"required"`
 	}
 
 	err := c.ShouldBindJSON(&payload)
@@ -27,7 +25,7 @@ func Login(
 		return
 	}
 
-	if payload.Password != configs.DEFAULT_PASSWORD {
+	if !helpers.IsTokenValid(payload.Refresh, configs.API_KEY) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"error": "unauthorized",
 		})

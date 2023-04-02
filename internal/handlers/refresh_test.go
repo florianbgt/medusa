@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/test"
 	"net/http"
 	"net/http/httptest"
@@ -12,11 +13,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoginRoute(t *testing.T) {
+func TestRefreshTokenRoute(t *testing.T) {
 	api := test.SetupApi()
-	route := "/api/login"
+	route := "/api/token/refresh"
 
-	t.Run("login", func(t *testing.T) {
+	api_key := configs.SetupConfigs().API_KEY
+
+	token_pair, _ := helpers.GenerateTokenPair(api_key)
+
+	t.Run("refresh token", func(t *testing.T) {
 		type testCase struct {
 			payload map[string]string
 			status  int
@@ -29,23 +34,23 @@ func TestLoginRoute(t *testing.T) {
 				payload: map[string]string{},
 				status:  http.StatusBadRequest,
 				success: false,
-				err:     "Key: 'Password' Error:Field validation for 'Password' failed on the 'required' tag",
+				err:     "Key: 'Refresh' Error:Field validation for 'Refresh' failed on the 'required' tag",
 			},
 			{
 				payload: map[string]string{
-					"password": configs.SetupConfigs().DEFAULT_PASSWORD,
-				},
-				status:  http.StatusOK,
-				success: true,
-				err:     "",
-			},
-			{
-				payload: map[string]string{
-					"password": "wrong_password",
+					"refresh": "invalid_token",
 				},
 				status:  http.StatusUnauthorized,
 				success: false,
 				err:     "unauthorized",
+			},
+			{
+				payload: map[string]string{
+					"refresh": token_pair.Refresh,
+				},
+				status:  http.StatusOK,
+				success: true,
+				err:     "",
 			},
 		} {
 			w := httptest.NewRecorder()
@@ -69,7 +74,7 @@ func TestLoginRoute(t *testing.T) {
 					return len(response["refresh_token"]) > 0
 				})
 			} else {
-				assert.Equal(t, scenario.err, response["error"])
+				assert.Equal(t, response["error"], scenario.err)
 			}
 		}
 	})

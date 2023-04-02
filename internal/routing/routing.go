@@ -45,6 +45,13 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 		)
 	})
 
+	router.POST("api/token/refresh", func(c *gin.Context) {
+		handlers.RefreshToken(
+			c,
+			configs,
+		)
+	})
+
 	router.GET("api/private", isAuthenticated, handlers.Private)
 
 	router.NoRoute(serveApp())
