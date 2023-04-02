@@ -28,8 +28,8 @@ func Login(
 	}
 
 	if payload.Password != configs.DEFAULT_PASSWORD {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "unauthorized",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "password_incorrect",
 		})
 		return
 	}
