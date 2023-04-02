@@ -1,9 +1,10 @@
 import { api } from "@/api/api";
-import Button from "@/components/button";
-import Input from "@/components/input";
+import Button from "@/components/ui/button";
+import Input from "@/components/ui/input";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [password, setPassword] = React.useState<string>("");
@@ -41,13 +42,16 @@ export default function Home() {
 
 
   return (
-    <div className="flex justify-center items-stretch">
-      <div className="w-full max-w-lg border-4 rounded-3xl border-secondary bg-light/10 p-5">
-        <div className="text-5xl font-bold text-center">
-          Login
-        </div>
-        <div className="text-xl text-center mt-5">
-          Welcome to Medusa, your 3D printer assistant 🛠️
+    <div className="min-h-screen flex flex-col justify-center items-center">
+      <div className="w-full max-w-lg border-4 rounded-3xl border-secondary bg-light/25 p-5">
+        <div className="flex flex-col items-center">
+          <Image src="/medusa.png" width="150" height="150" alt="logo"/>
+          <div className="text-3xl mt-5">
+            Welcome to Medusa
+          </div>
+          <div className="text-3xl mt-2">
+            your 3D printer assistant 🛠️
+          </div>
         </div>
         <form onSubmit={handleSubmit} className="mt-5 flex flex-col">
           <Input

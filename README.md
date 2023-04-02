@@ -1,3 +1,3 @@
-# MEDISA
+# MEDUSA
 
 Medusa

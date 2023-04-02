@@ -76,4 +76,4 @@ async function api(payload: Payload) {
   return await onResponseError(payload, response);
 };
 
-export { api };
+export { api, logout };
