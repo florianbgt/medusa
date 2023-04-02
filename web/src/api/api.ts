@@ -7,7 +7,13 @@ type Payload = {
 
 const baseUrl = "http://localhost:8080/api/";
 
-const refreshToken = async () => {
+function logout() {
+  localStorage.removeItem("refresh");
+  localStorage.removeItem("access");
+  location.href = "/login";
+}
+
+async function refreshToken() {
   try {
     const response = await fetch(baseUrl + "token/refresh/", {
       method: "POST",
@@ -22,17 +28,15 @@ const refreshToken = async () => {
       localStorage.setItem("access", access);
     } else throw Error;
   } catch (error) {
-    localStorage.removeItem("refresh");
-    localStorage.removeItem("access");
-    location.href = "/login";
+    logout();
     throw error;
   }
 };
 
-const onResponseError: any = async (
+async function onResponseError(
   originalRequest: Payload,
   response: any
-) => {
+): Promise<any> {
   const data = await response.json();
   if (response.status === 401) {
     await refreshToken();
@@ -41,7 +45,7 @@ const onResponseError: any = async (
   throw data;
 };
 
-const api = async (payload: Payload) => {
+async function api(payload: Payload) {
   const { url, method, data, _retried } = payload;
   const accessToken = localStorage.getItem("access");
 

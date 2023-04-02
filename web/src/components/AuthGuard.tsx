@@ -10,12 +10,12 @@ export default function Input({ children }: Props) {
   
   const router = useRouter()
 
-  useEffect(() => {
+  useEffect(function () {
     authCheck(router.asPath)
-    const hideContent = () => setAuthenticated(false)
+    const hideContent = function() {setAuthenticated(false)}
     router.events.on('routeChangeStart', hideContent)
     router.events.on('routeChangeComplete', authCheck)
-    return () => {
+    return function() {
       router.events.off('routeChangeStart', hideContent);
       router.events.off('routeChangeComplete', authCheck);
     }

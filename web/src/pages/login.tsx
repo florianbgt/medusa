@@ -11,7 +11,7 @@ export default function Home() {
 
   const router = useRouter()
 
-  useEffect(() => {
+  useEffect(function() {
     passwordRef.current?.setCustomValidity("")
   }, [password])
 
@@ -56,7 +56,7 @@ export default function Home() {
             label="Password"
             type="password"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={function(event) {setPassword(event.target.value)}}
             placeholder="password"
             required
           />
