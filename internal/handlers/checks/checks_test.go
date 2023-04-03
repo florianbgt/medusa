@@ -1,4 +1,4 @@
-package handlers_test
+package checks_test
 
 import (
 	"florianbgt/medusa/test"

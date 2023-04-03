@@ -41,6 +41,6 @@ func SetupConfigs() *Configs {
 		API_KEY:          getEnvString("API_KEY", "change-on-prod"),
 		DEFAULT_PASSWORD: getEnvString("PASSWORD", "Password/123"),
 		TOKEN_EXPIRATION: getEnvInt("TOKEN_EXPIRATION", 60*60),
-		SQLITE_FILE_PATH: getEnvString("SQLITE_FILE_PATH", "app.db"),
+		SQLITE_FILE_PATH: getEnvString("SQLITE_FILE_PATH", "medusa.db"),
 	}
 }

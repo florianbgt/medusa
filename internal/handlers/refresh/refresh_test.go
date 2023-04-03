@@ -1,4 +1,4 @@
-package handlers_test
+package refresh_test
 
 import (
 	"bytes"

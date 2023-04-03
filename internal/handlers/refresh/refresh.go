@@ -1,4 +1,4 @@
-package handlers
+package refresh
 
 import (
 	"florianbgt/medusa/internal/configs"

@@ -1,4 +1,4 @@
-package handlers_test
+package login_test
 
 import (
 	"bytes"
@@ -43,9 +43,9 @@ func TestLoginRoute(t *testing.T) {
 				payload: map[string]string{
 					"password": "wrong_password",
 				},
-				status:  http.StatusUnauthorized,
+				status:  http.StatusBadRequest,
 				success: false,
-				err:     "unauthorized",
+				err:     "password_incorrect",
 			},
 		} {
 			w := httptest.NewRecorder()

@@ -2,7 +2,11 @@ package routing
 
 import (
 	"florianbgt/medusa/internal/configs"
-	"florianbgt/medusa/internal/handlers"
+	"florianbgt/medusa/internal/handlers/checks"
+	"florianbgt/medusa/internal/handlers/login"
+	"florianbgt/medusa/internal/handlers/password_change"
+	"florianbgt/medusa/internal/handlers/private"
+	"florianbgt/medusa/internal/handlers/refresh"
 	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/web"
 	"net/http"
@@ -52,10 +56,10 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 		helpers.IsAuthCheck(c, configs.API_KEY)
 	}
 
-	router.GET("api/healthy", handlers.Healthy)
+	router.GET("api/healthy", checks.Healthy)
 
 	router.POST("api/login", func(c *gin.Context) {
-		handlers.Login(
+		login.Login(
 			c,
 			db,
 			configs,
@@ -63,13 +67,21 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	})
 
 	router.POST("api/token/refresh", func(c *gin.Context) {
-		handlers.RefreshToken(
+		refresh.RefreshToken(
 			c,
 			configs,
 		)
 	})
 
-	router.GET("api/private", isAuthenticated, handlers.Private)
+	router.POST("api/password/change", func(c *gin.Context) {
+		password_change.ChangePassword(
+			c,
+			db,
+			configs,
+		)
+	})
+
+	router.GET("api/private", isAuthenticated, private.Private)
 
 	router.NoRoute(serveApp())
 

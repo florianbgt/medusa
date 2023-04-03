@@ -2,7 +2,7 @@ package db
 
 import (
 	"florianbgt/medusa/internal/configs"
-	"florianbgt/medusa/internal/models"
+	"florianbgt/medusa/internal/models/password_model"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -15,7 +15,8 @@ func SetupDb(path string, configs *configs.Configs) *gorm.DB {
 		panic("failed to connect database")
 	}
 
-	models.SetupPassword(db, configs.DEFAULT_PASSWORD)
+	var passwordInstance password_model.Password
+	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD)
 
 	return db
 }

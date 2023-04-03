@@ -1,0 +1,65 @@
+package password_change
+
+import (
+	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/models/password_model"
+	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+func ChangePassword(
+	c *gin.Context,
+	db *gorm.DB,
+	configs *configs.Configs,
+) {
+	var payload struct {
+		OldPassword string `json:"old_password" binding:"required"`
+		Password    string `json:"password" binding:"required"`
+		Password2   string `json:"password2" binding:"required"`
+	}
+
+	err := c.ShouldBindJSON(&payload)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": fmt.Sprintf("%v", err),
+		})
+		return
+	}
+
+	var passwordInstance password_model.Password
+
+	currentPassword, err := passwordInstance.GetPassword(db)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if currentPassword != payload.OldPassword {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "old_password_incorrect",
+		})
+		return
+	}
+
+	if payload.Password != payload.Password2 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "password2_does_not_match",
+		})
+		return
+	}
+
+	err = passwordInstance.UpdatePassword(db, payload.Password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, nil)
+}
