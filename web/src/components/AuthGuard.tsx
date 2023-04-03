@@ -18,7 +18,7 @@ const GuardSpinner = (
   
 )
 
-export default function Input({ children }: Props) {
+export default function AuthGuard({ children }: Props) {
   const [initialized, setInitialized] = useState(false);
   const [authenticated, setAuthenticated] = useState(false); 
 

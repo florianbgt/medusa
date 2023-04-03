@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Header() {
     return (
       <div className="flex justify-center bg-secondary shadow-lg">
-        <div className="container flex justify-between items-center py-2">
+        <div className="container flex justify-between items-center py-2 mr-2">
           <Link href="/" className="flex items-center">
             <Image src="/medusa.png" height="60" width="60" alt="logo" />
             <div className="text-4xl font-bold">

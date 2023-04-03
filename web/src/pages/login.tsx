@@ -3,11 +3,11 @@ import Button from "@/components/ui/button";
 import Input from "@/components/ui/input";
 import { useRouter } from "next/router";
 import React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [password, setPassword] = React.useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter()
@@ -64,7 +64,7 @@ export default function Home() {
             placeholder="password"
             required
           />
-          <Button className="mt-5" color="primary" size="lg" type="submit">Login</Button>
+          <Button className="mt-5" color="primary" size="lg" pill type="submit">Login</Button>
         </form>
       </div>
     </div>
