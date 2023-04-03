@@ -15,7 +15,7 @@ function logout() {
 
 async function refreshToken() {
   try {
-    const response = await fetch(baseUrl + "token/refresh/", {
+    const response = await fetch(baseUrl + "token/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,9 +23,9 @@ async function refreshToken() {
       body: JSON.stringify({ refresh: localStorage.getItem("refresh") }),
     });
     if (response.ok) {
-      const { access, refresh } = await response.json();
-      localStorage.setItem("refresh", refresh);
-      localStorage.setItem("access", access);
+      const { access_token, refresh_token } = await response.json();
+      localStorage.setItem("access", access_token);
+      localStorage.setItem("refresh", refresh_token);
     } else throw Error;
   } catch (error) {
     logout();
