@@ -1,6 +1,9 @@
 name: Build and Deploy Go binaries
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build_and_deploy:
@@ -28,11 +31,11 @@ jobs:
       - name: Build go binaries
         run: go build -o bin/medusa ./cmd/medusa/main.go
 
-      # - name: Deploy to github releases
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: ./bin/medusa
-      #     tag_name: latest
-      #     draft: true
-      #     prerelease: true
-      #     token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to github releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./bin/medusa
+          tag_name: latest
+          draft: true
+          prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
