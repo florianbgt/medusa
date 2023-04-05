@@ -1,2 +1,38 @@
 bin
 medusa.db
+
+# dependencies
+web/node_modules
+web/.pnp
+.pnp.js
+
+# testing
+web/coverage
+
+# next.js
+web/.next/
+web/out/*
+!web/out/.gitkeep
+
+# production
+web/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/.pnpm-debug.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
