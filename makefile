@@ -14,7 +14,7 @@ app-dev:
 
 
 server-build:app-build
-	go build -o ${api_output_dir} ${api_entry_point}
+	go build -v -o ${api_output_dir} ${api_entry_point}
 
 server-run: server-build
 	PORT=8080 ${api_output_dir}

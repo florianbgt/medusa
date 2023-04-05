@@ -36,6 +36,3 @@ jobs:
         with:
           files: ./bin/medusa
           tag_name: latest
-          draft: true
-          prerelease: true
-          token: ${{ secrets.GITHUB_TOKEN }}
