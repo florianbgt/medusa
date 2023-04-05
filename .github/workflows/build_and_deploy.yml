@@ -3,37 +3,27 @@ name: Build and Deploy Go binaries
 on: [push]
 
 jobs:
-  name: Build nextjs static app
-  runs-on: [ubuntu-latest]
-  steps:
-    - uses: actions/checkout@v3
+  build_and_deploy:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn --cwd ./web install
+      - name: Build static app
+        run: yarn --cwd build
 
-    - name: Use Node.js 16
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16
+      - name: Build go binaries
+        uses: docker://golang:1.20
+        run: go build -o bin/medusa ./cmd/medusa/main.go
 
-    - name: Install dependencies
-      run: yarn --cwd ./web install
-
-    - name: Build static app
-      run: yarn --cwd build
-
-  name: Build go binaries
-  runs-on: [ubuntu-latest]
-  steps:
-    - name: Build go binaries
-      uses: docker://golang:1.20
-      run: go build -o bin/medusa ./cmd/medusa/main.go
-
-  name: Deploy binaries to github releases
-  runs-on: [ubuntu-latest]
-  steps:
-    - name: Deploy to github releases
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ./bin/medusa
-        tag_name: latest
-        draft: true
-        prerelease: true
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to github releases
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./bin/medusa
+          tag_name: latest
+          draft: true
+          prerelease: true
+          token: ${{ secrets.GITHUB_TOKEN }}
