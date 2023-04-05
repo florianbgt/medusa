@@ -5,7 +5,7 @@ type Payload = {
   _retried?: true;
 };
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:8080/api";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "/api";
 
 function logout() {
   localStorage.removeItem("refresh");

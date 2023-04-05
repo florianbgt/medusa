@@ -37,7 +37,7 @@ type Configs struct {
 
 func SetupConfigs() *Configs {
 	return &Configs{
-		PORT:             getEnvString("PORT", "8080"),
+		PORT:             getEnvString("PORT", "80"),
 		API_KEY:          getEnvString("API_KEY", "change-on-prod"),
 		DEFAULT_PASSWORD: getEnvString("PASSWORD", "Password/123"),
 		TOKEN_EXPIRATION: getEnvInt("TOKEN_EXPIRATION", 60*60),
