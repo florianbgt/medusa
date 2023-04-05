@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   name: Build nextjs static app
-  runs-on: ubuntu-latest
+  runs-on: [ubuntu-latest]
   steps:
     - uses: actions/checkout@v3
 
@@ -20,12 +20,13 @@ jobs:
       run: yarn --cwd build
 
 name: Build go binaries
-  runs-on: ubuntu-latest
+  runs-on: [ubuntu-latest]
     - name: Build go binaries
       uses: docker://golang:1.20
       run: go build -o bin/medusa ./cmd/medusa/main.go
 
 name: Deploy binaries to github releases
+  runs-on: [ubuntu-latest]
     - name: Deploy to github releases
       uses: softprops/action-gh-release@v1
       with:
