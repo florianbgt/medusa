@@ -11,8 +11,7 @@ web/coverage
 
 # next.js
 web/.next/
-web/out/*
-!web/out/.gitkeep
+web/out/
 
 # production
 web/build

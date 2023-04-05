@@ -14,5 +14,8 @@ jobs:
         with:
           go-version: "1.20"
 
-      - name: Build go binaries
+      - name: Create out directory
+        run: mkdir web/out
+
+      - name: run tests
         run: go test -count=1 ./...
