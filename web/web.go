@@ -5,7 +5,7 @@ import (
 	"io/fs"
 )
 
-//go:embed out/*
+//go:embed all:out
 var BuildFs embed.FS
 
 // embed the production build of the FE located in the out directory.

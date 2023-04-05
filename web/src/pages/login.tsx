@@ -22,7 +22,7 @@ export default function Home() {
     const payload = {
       password: password,
     }
-    const url = "login"
+    const url = "/login"
 
     try {
       const {access_token, refresh_token} = await api({ url, method: "POST", data: payload })

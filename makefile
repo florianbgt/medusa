@@ -8,6 +8,7 @@ app-install:
 
 app-build: app-install
 	yarn --cwd ${web_package} build
+	touch ${web_package}/out/.nojekyll
 
 app-dev:
 	yarn --cwd ${web_package} dev
@@ -20,7 +21,7 @@ server-run: server-build
 	${api_output_dir}
 
 server-dev:
-	go run ${api_entry_point}
+	export NEXT_PUBLIC_BASE_API_URL="" go run ${api_entry_point}
 
 server-test:
 	go test -count=1 ./...

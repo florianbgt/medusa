@@ -5,7 +5,7 @@ type Payload = {
   _retried?: true;
 };
 
-const baseUrl = "http://localhost:8080/api/";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:8080/api";
 
 function logout() {
   localStorage.removeItem("refresh");
@@ -15,7 +15,7 @@ function logout() {
 
 async function refreshToken() {
   try {
-    const response = await fetch(baseUrl + "token/refresh", {
+    const response = await fetch(baseUrl + "/token/refresh", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

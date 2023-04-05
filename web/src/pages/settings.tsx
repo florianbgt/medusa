@@ -47,7 +47,7 @@ function ChangePassword() {
       password: password,
       password2: password2,
     }
-    const url = "password/change"
+    const url = "/password/change"
 
     try {
       await api({ url, method: "POST", data: payload })
