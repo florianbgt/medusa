@@ -22,7 +22,7 @@ func SetupCamera() *device.Device {
 		device.WithPixFormat(v4l2.PixFormat{PixelFormat: v4l2.PixelFmtMJPEG, Width: 640, Height: 480}),
 	)
 	if err != nil {
-		panic(fmt.Sprintf("failed to open device: %s", err))
+		panic(err)
 	}
 
 	return camera

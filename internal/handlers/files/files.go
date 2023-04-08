@@ -2,7 +2,6 @@ package files
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -73,15 +72,12 @@ func ListFiles(c *gin.Context) {
 }
 
 func DeleteFile(c *gin.Context) {
-	fmt.Println("000000000000000")
 	fileName := c.Param("name")
 	err := os.Remove(directory + fileName)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{})
 		return
 	}
-
-	fmt.Println("1111111111111")
 
 	c.JSON(http.StatusOK, nil)
 }

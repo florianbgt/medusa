@@ -6,7 +6,6 @@ import (
 	"florianbgt/medusa/internal/db"
 	"florianbgt/medusa/internal/handlers/stream"
 	"florianbgt/medusa/internal/routing"
-	"fmt"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 	defer camera.Close()
 
 	if err := camera.Start(context.TODO()); err != nil {
-		panic(fmt.Sprintf("camera start: %s", err))
+		panic(err)
 	}
 
 	stream.Frames = camera.GetOutput()
