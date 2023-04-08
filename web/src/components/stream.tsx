@@ -25,8 +25,8 @@ export default function Stream() {
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="rounded-xl border-2 border-primary shadow-xl scale-x-[-1]"
-            width={1000}
+            className="scale-x-[-1]"
+            width={10000}
             alt="stream"
             src={streamUrl}
           />
