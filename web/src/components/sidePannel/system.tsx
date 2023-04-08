@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Section from "@/components/sidePannel/section";
-import { api } from "@/api/api";
+import Section from "./section";
+import { api } from "../../api";
 
 export default function System() {
     const [state, setState] = useState({

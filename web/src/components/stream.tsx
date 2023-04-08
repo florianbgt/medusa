@@ -1,4 +1,4 @@
-import { api, baseUrl } from "@/api/api";
+import { api, baseUrl } from "../api";
 import { useEffect, useState } from "react";
 
 export default function Stream() {
@@ -23,7 +23,6 @@ export default function Stream() {
     <>
       {authChecked && (
         <>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             className="scale-x-[-1]"
             width={10000}

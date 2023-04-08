@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Button from "@/components/ui/button"
-import Section from "@/components/sidePannel/section";
+import Button from "../ui/button"
+import Section from "./section";
 import FileUpload from "./fileUpload";
-import { api } from "@/api/api";
+import { api } from "../../api";
 
 interface File{
     name: string

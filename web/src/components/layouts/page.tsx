@@ -1,4 +1,4 @@
-import Header from '@/components/header'
+import Header from '../header'
 
 interface Props {
     children: React.ReactElement<any, any>

@@ -20,9 +20,11 @@ import (
 
 func serveApp() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		// Rediect to index.html (SPA)
 		file_extention := filepath.Ext(c.Request.URL.Path)
-		if file_extention == "" && c.Request.URL.Path != "/" {
-			c.Request.URL.Path = c.Request.URL.Path + ".html"
+		if file_extention == "" {
+			c.Request.URL.Path = "/"
 		}
 
 		embeded_app := web.BuildFS()

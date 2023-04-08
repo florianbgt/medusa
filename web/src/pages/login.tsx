@@ -1,16 +1,16 @@
-import { api } from "@/api/api";
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
-import { useRouter } from "next/router";
+import { useLocation, useNavigate } from "react-router-dom";
+import { api } from "../api";
+import Button from "../components/ui/button";
+import Input from "../components/ui/input";
 import React from "react";
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 
 export default function Home() {
   const [password, setPassword] = useState<string>("");
   const passwordRef = useRef<HTMLInputElement>(null);
 
-  const router = useRouter()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(function() {
     passwordRef.current?.setCustomValidity("")
@@ -28,8 +28,7 @@ export default function Home() {
       const {access_token, refresh_token} = await api({ url, method: "POST", data: payload })
       localStorage.setItem("access", access_token)
       localStorage.setItem("refresh", refresh_token)
-      const path = router.query.returnUrl as string || "/"
-      router.push(path)
+      return navigate("/")
     } catch (error: any) {
       if (error.error === "password_incorrect") {
         passwordRef.current?.setCustomValidity("Password is incorrect")
@@ -43,9 +42,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <div className="w-full max-w-lg border-4 rounded-3xl border-secondary bg-light/25 p-5">
+      <div className="w-full max-w-lg border-4 rounded-3xl border-secondary bg-secondary/5 p-5">
         <div className="flex flex-col items-center">
-          <Image src="/medusa.png" width="150" height="150" alt="logo"/>
+          <img src="/medusa.png" width="150" height="150" alt="logo"/>
           <div className="text-3xl mt-5">
             Welcome to Medusa
           </div>

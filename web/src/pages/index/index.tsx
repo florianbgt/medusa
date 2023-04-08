@@ -1,12 +1,12 @@
-import Page from "./page";
-import SidePannel from "../sidePannel/sidePannel";
-import { Link, useLocation } from "react-router-dom";
+import Page from "../../components/layouts/page";
+import SidePannel from "../../components/sidePannel/sidePannel";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 
 interface Props {
     children: React.ReactNode;
 }
 
-export default function Main({children}: Props) {
+export default function Main() {
     const currentPath = useLocation().pathname;
 
     function getClassName(path: string) {
@@ -16,6 +16,8 @@ export default function Main({children}: Props) {
         }
         return `${base} hover:bg-primary/50`;
     }
+
+    if (currentPath === "/") return <Navigate to="/temperature" replace={true}/>;
 
     return (
         <Page>
@@ -36,7 +38,7 @@ export default function Main({children}: Props) {
                         </Link>
                     </div>
                     <div className="flex flex-col p-1">
-                        {children}
+                        <Outlet/>
                     </div>
                 </div>
             </div>

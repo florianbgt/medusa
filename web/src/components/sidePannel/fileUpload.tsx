@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { api } from "@/api/api";
+import { api } from "../../api";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     onUploaded: () => Promise<void>

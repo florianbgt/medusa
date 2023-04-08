@@ -10,7 +10,7 @@ app-build: app-install
 	yarn --cwd ${web_package} build
 
 app-dev:
-	NEXT_PUBLIC_BASE_API_URL=http://localhost:8080/api yarn --cwd ${web_package} dev
+	yarn --cwd ${web_package} dev
 
 
 server-build:app-build

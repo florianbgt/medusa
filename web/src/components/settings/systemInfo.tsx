@@ -1,4 +1,4 @@
-import { api } from "@/api/api";
+import { api } from "../../api";
 import { useEffect, useState } from "react";
 
 export default function SystemInfo() {

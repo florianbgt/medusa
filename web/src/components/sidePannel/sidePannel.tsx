@@ -1,6 +1,6 @@
-import Current from "@/components/sidePannel/current";
-import Files from "@/components/sidePannel/files";
-import System from "@/components/sidePannel/system";
+import Current from "./current";
+import Files from "./files";
+import System from "./system";
 
 export default function SidePannel() {
   return (

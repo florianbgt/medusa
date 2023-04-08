@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Button from "@/components/ui/button"
-import Section from "@/components/sidePannel/section";
+import Button from "../ui/button"
+import Section from "./section";
 
 export default function Current() {
     const [state, setState] = useState({

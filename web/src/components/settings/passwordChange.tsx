@@ -1,6 +1,6 @@
-import { api } from "@/api/api";
-import Button from "@/components/ui/button"
-import Input from "@/components/ui/input"
+import { api } from "../../api";
+import Button from "../ui/button"
+import Input from "../ui/input"
 import { useEffect, useRef, useState } from "react";
 
 export default function PasswordChange() {
@@ -89,7 +89,7 @@ export default function PasswordChange() {
       </div>
       
       {isFormVisible && (
-        <form onSubmit={handleSubmit} className="transition ease-in-out delay-150 bg-secondary flex flex-col gap-1 mt-2 p-3 rounded-xl">
+        <form onSubmit={handleSubmit} className="border-4 border-secondary bg-secondary/5 flex flex-col gap-1 mt-2 p-3 rounded-xl">
           <Input
             elRef={oldPasswordRef}
             id="old_password"

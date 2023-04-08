@@ -7,7 +7,7 @@ type Payload = {
   _retried?: true;
 };
 
-export const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "/api";
+export const baseUrl = import.meta.env.VITE_BASE_API_URL || "/api";
 
 function logout() {
   localStorage.removeItem("refresh");
