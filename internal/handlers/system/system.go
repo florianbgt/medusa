@@ -15,9 +15,31 @@ func getWiFiSSID() string {
 		panic(err)
 	}
 
-	name := string(out)
+	wifi := string(out)
 
-	return name
+	return wifi
+}
+
+func getHostName() string {
+	out, err := exec.Command("hostname").Output()
+	if err != nil {
+		panic(err)
+	}
+
+	host := string(out)
+
+	return host
+}
+
+func getArchitecture() string {
+	out, err := exec.Command("uname", "-m").Output()
+	if err != nil {
+		panic(err)
+	}
+
+	arch := string(out)
+
+	return arch
 }
 
 func getCPULoad() float64 {
@@ -64,6 +86,8 @@ func getCPUTemp() float64 {
 func SystemInfo(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"ssid": getWiFiSSID(),
+		"host": getHostName(),
+		"arch": getArchitecture(),
 	})
 }
 

@@ -14,7 +14,11 @@ export default function System() {
             const url = "/system/metrics"
     
             try {
-                let {cpu_load, cpu_temp}: {cpu_load: number, cpu_temp: number} = await api({ url, method: "GET"})
+                type Response = {
+                    cpu_load: number,
+                    cpu_temp: number,
+                }
+                let {cpu_load, cpu_temp}: Response = await api({ url, method: "GET"})
                 cpu_load = Math.round(cpu_load*100)/100
                 cpu_temp = Math.round(cpu_temp*100)/100
                 setState({
