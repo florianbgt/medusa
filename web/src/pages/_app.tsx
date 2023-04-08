@@ -1,4 +1,4 @@
-import AuthGuard from '@/components/AuthGuard'
+import AuthGuard from '@/components/authGuard'
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'

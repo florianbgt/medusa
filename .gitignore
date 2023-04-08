@@ -1,5 +1,6 @@
 bin
 medusa.db
+uploads
 
 # dependencies
 web/node_modules

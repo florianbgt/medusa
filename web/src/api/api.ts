@@ -1,11 +1,13 @@
 type Payload = {
   url: string;
-  method?: string;
+  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
   data?: object;
+  body?: BodyInit;
+  headers?: HeadersInit;
   _retried?: true;
 };
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "/api";
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_API_URL || "/api";
 
 function logout() {
   localStorage.removeItem("refresh");
@@ -46,26 +48,29 @@ async function onResponseError(
 };
 
 async function api(payload: Payload) {
-  const { url, method, data, _retried } = payload;
+  let { url, method, data, body, headers, _retried } = payload;
   const accessToken = localStorage.getItem("access");
 
-  type Headers = {
-    "Content-Type": "application/json";
-    Authorization?: string;
-  };
+  if (!headers) headers = {};
 
-  const headers: Headers = {
-    "Content-Type": "application/json",
-  };
+  if (accessToken) {
+    headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
+  }
 
-  const body = data ? JSON.stringify(data) : undefined;
+  if ("Content-Type" in headers) {
+    headers["Content-Type"] = "application/json"
+  }
 
-  if (accessToken) headers["Authorization"] = `Bearer ${accessToken}`;
+  const requestBody = data ? JSON.stringify(data) : undefined;
 
-  const response = await fetch(url.startsWith("http") ? url : baseUrl + url, {
+  url = url.startsWith("http") ? url : baseUrl + url
+
+  const response = await fetch(url, {
     method: method || "GET",
-    headers,
-    body,
+    headers: headers,
+    body: body || requestBody,
   });
 
   if (response.ok || _retried) {

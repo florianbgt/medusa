@@ -3,10 +3,12 @@ package routing
 import (
 	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/handlers/checks"
+	"florianbgt/medusa/internal/handlers/files"
 	"florianbgt/medusa/internal/handlers/login"
 	"florianbgt/medusa/internal/handlers/password_change"
-	"florianbgt/medusa/internal/handlers/private"
 	"florianbgt/medusa/internal/handlers/refresh"
+	"florianbgt/medusa/internal/handlers/stream"
+	"florianbgt/medusa/internal/handlers/system"
 	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/web"
 	"net/http"
@@ -35,7 +37,7 @@ func serveApp() gin.HandlerFunc {
 func corsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 		if c.Request.Method == http.MethodOptions {
@@ -57,6 +59,7 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	}
 
 	router.GET("api/healthy", checks.Healthy)
+	router.GET("api/authenticated", isAuthenticated, checks.Healthy)
 
 	router.POST("api/login", func(c *gin.Context) {
 		login.Login(
@@ -65,15 +68,13 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 			configs,
 		)
 	})
-
 	router.POST("api/token/refresh", func(c *gin.Context) {
 		refresh.RefreshToken(
 			c,
 			configs,
 		)
 	})
-
-	router.POST("api/password/change", func(c *gin.Context) {
+	router.POST("api/password/change", isAuthenticated, func(c *gin.Context) {
 		password_change.ChangePassword(
 			c,
 			db,
@@ -81,7 +82,19 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 		)
 	})
 
-	router.GET("api/private", isAuthenticated, private.Private)
+	router.GET("api/system", isAuthenticated, system.SystemInfo)
+	router.GET("api/system/metrics", isAuthenticated, system.SystemMetrics)
+
+	router.GET("api/stream", func(c *gin.Context) {
+		stream.Stream(
+			c,
+			configs.API_KEY,
+		)
+	})
+
+	router.GET("api/files", isAuthenticated, files.ListFiles)
+	router.POST("api/files", isAuthenticated, files.UploadFile)
+	router.DELETE("api/files/:name", isAuthenticated, files.DeleteFile)
 
 	router.NoRoute(serveApp())
 
