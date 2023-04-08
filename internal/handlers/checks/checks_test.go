@@ -19,6 +19,6 @@ func TestHealthyRoute(t *testing.T) {
 		api.ServeHTTP(w, req)
 
 		assert.Equal(t, w.Code, http.StatusOK)
-		assert.Equal(t, w.Body.String(), "healthy")
+		assert.Equal(t, w.Body.String(), "\"healthy\"")
 	})
 }

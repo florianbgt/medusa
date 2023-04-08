@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/internal/models/password_model"
 	"florianbgt/medusa/test"
 	"net/http"
@@ -84,8 +85,12 @@ func TestLoginRoute(t *testing.T) {
 
 			payload, _ := json.Marshal(scenario.payload)
 			body := bytes.NewBuffer(payload)
+			token_pair, _ := helpers.GenerateTokenPair(configs.SetupConfigs().API_KEY)
 
 			req, _ := http.NewRequest("POST", route, body)
+			req.Header = http.Header{
+				"Authorization": []string{"Bearer " + token_pair.Access},
+			}
 			api.ServeHTTP(w, req)
 
 			assert.Equal(t, scenario.status, w.Code)
