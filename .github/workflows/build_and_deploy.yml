@@ -35,6 +35,8 @@ jobs:
 
       - name: Build go binaries
         run: go build -v -o bin/medusa ./cmd/medusa/main.go
+
+      - name: Build go binaries for rasberry pi
         run: GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC="zig cc -target arm-linux-musleabihf" CXX="zig c++ -target arm-linux-musleabihf" go build -v -o bin/medusa_pi ./cmd/medusa/main.go
 
       - name: Deploy to github release
