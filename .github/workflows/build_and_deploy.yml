@@ -30,11 +30,15 @@ jobs:
         with:
           go-version: "1.20"
 
+      - name: Setup Zig
+        uses: goto-bus-stop/setup-zig@v2
+
       - name: Build go binaries
         run: go build -v -o bin/medusa ./cmd/medusa/main.go
+        run: GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC="zig cc -target arm-linux-musleabihf" CXX="zig c++ -target arm-linux-musleabihf" go build -v -o bin/medusa_pi ./cmd/medusa/main.go
 
       - name: Deploy to github release
         uses: softprops/action-gh-release@v1
         with:
-          files: ./bin/medusa
+          files: ./bin/*
           tag_name: latest
