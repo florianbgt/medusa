@@ -20,10 +20,10 @@ jobs:
           node-version: "16"
 
       - name: Install node dependencies
-        run: yarn --cwd ./web install
+        run: make app-install
 
       - name: Build static app
-        run: yarn --cwd ./web build
+        run: make app-build
 
       - name: Setup Go
         uses: actions/setup-go@v4
