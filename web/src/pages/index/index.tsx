@@ -17,7 +17,7 @@ export default function Main() {
 
     return (
         <Page>
-            <div className="grow container mx-auto my-5 grid grid-cols-1 md:grid-cols-3 border-2 border-primary rounded-xl">
+            <div className="grow grid grid-cols-1 md:grid-cols-3 border-2 border-primary rounded-xl">
                 <div className="md:border-r-2 border-primary">
                     <SidePannel/>
                 </div>

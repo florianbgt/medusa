@@ -5,7 +5,7 @@ import SystemInfo from "../components/settings/systemInfo";
 export default function Settings() {
   return (
     <Page>
-      <div>
+      <div className="flex flex-col gap-2">
         <SystemInfo/>
         <PasswordChange/>
       </div>

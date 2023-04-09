@@ -117,7 +117,7 @@ export default function PasswordChange() {
             type="password"
             required
           />
-          <Button className="mt-2" type="submit" color="primary" pill>Change Password</Button>
+          <Button className="mt-2" type="submit" color="primary" size="md" pill>Change Password</Button>
         </form>
       )}
     </div>

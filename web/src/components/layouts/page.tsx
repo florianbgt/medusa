@@ -8,7 +8,9 @@ export default function Layout({ children }: Props) {
     return (
       <div className='min-h-screen flex flex-col'>
         <Header/>
-        {children}
+        <div className='grow flex flex-col container mx-auto my-5'>
+          {children}
+        </div>
       </div>
     )
   }
