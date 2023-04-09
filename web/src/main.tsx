@@ -10,7 +10,6 @@ import Control from './pages/index/control';
 import GCode from './pages/index/gcode/gcode';
 import { Navigate } from "react-router-dom";
 import NotFound from './pages/404';
-import Viewer from './pages/index/gcode/Viewer';
 
 interface Props {
   children: React.ReactNode
