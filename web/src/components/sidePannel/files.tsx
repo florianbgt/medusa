@@ -66,14 +66,14 @@ export default function Files() {
                     </span>
                 </div>
                 <div className="flex gap-1">
-                    <Button size="sm">
+                    <Button size="sm" color="primary" className="w-full">
                         Load
                     </Button>
-                    <Button onClick={deleteFile} size="sm">
-                        Delete
-                    </Button>
-                    <Button size="sm">
+                    <Button size="sm" color="light" className="w-full">
                         View G-code
+                    </Button>
+                    <Button onClick={deleteFile} size="sm" color="accent" className="w-full">
+                        Delete
                     </Button>
                 </div>
             </div>

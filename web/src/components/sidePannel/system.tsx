@@ -37,7 +37,7 @@ export default function System() {
 
     return (
         <Section name="System">
-            <div className="flex flex-col gap-2 my-2">
+            <div className="flex flex-col gap-2 my-1">
                 <div>
                     CPU load: <span className="font-bold">{state.cpuLoad}</span>
                 </div>

@@ -6,11 +6,9 @@ interface Props {
 
 export default function Layout({ children }: Props) {
     return (
-      <>
+      <div className='min-h-screen flex flex-col'>
         <Header/>
-        <div className="container mx-auto my-5 px-2">
-          {children}
-        </div>
-      </>
+        {children}
+      </div>
     )
   }

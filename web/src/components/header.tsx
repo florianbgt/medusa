@@ -14,7 +14,7 @@ export default function Header() {
           </Link>
           <div className="flex items-center gap-5">
             <Link to="/settings" className="hover:underline">Settings</Link>
-            <Button onClick={logout} type="button" color="light" size="sm">Log out</Button>
+            <Button onClick={logout} type="button" color="accent" size="sm">Log out</Button>
           </div>
         </div>
       </div>

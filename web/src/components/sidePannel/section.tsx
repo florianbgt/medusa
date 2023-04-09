@@ -8,13 +8,13 @@ interface Props {
 
 export default function Section({name, children}: Props) {
     return (
-        <div>
-            <div className="bg-secondary text-xl font-bold text-center p-2">
+        <>
+            <div className="bg-secondary text-lg font-bold text-center py-1 mx-4">
                 {name}
             </div>
-            <div>
+            <div className="px-4">
                 {children}
             </div>
-        </div>
+        </>
     );
 }

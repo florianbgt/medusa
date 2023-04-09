@@ -59,13 +59,13 @@ export default function Current() {
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <Button onClick={print} size="sm" className="w-full">
+                    <Button onClick={print} color="primary" size="sm" className="w-full">
                         Print
                     </Button>
-                    <Button onClick={pause} size="sm" className="w-full">
+                    <Button onClick={pause} color="light" size="sm" className="w-full">
                         Pause
                     </Button>
-                    <Button onClick={cancel} size="sm" className="w-full">
+                    <Button onClick={cancel} color="accent" size="sm" className="w-full">
                         Cancel
                     </Button>
                 </div>

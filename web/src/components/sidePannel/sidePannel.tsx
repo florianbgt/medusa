@@ -4,7 +4,7 @@ import System from "./system";
 
 export default function SidePannel() {
   return (
-    <div className="m-3 flex flex-col gap-2">
+    <div className="flex flex-col gap-2">
         <System/>
         <Current/>
         <Files/>

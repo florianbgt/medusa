@@ -2,10 +2,6 @@ import Page from "../../components/layouts/page";
 import SidePannel from "../../components/sidePannel/sidePannel";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 
-interface Props {
-    children: React.ReactNode;
-}
-
 export default function Main() {
     const currentPath = useLocation().pathname;
 
@@ -21,12 +17,12 @@ export default function Main() {
 
     return (
         <Page>
-            <div className="grid grid-cols-1 md:grid-cols-3 border-2 border-primary rounded-xl">
+            <div className="grow container mx-auto my-5 grid grid-cols-1 md:grid-cols-3 border-2 border-primary rounded-xl">
                 <div className="md:border-r-2 border-primary">
                     <SidePannel/>
                 </div>
                 <div className="col-span-2 flex flex-col">
-                    <div className="flex bg-secondary border-b-2 border-primary sm:rounded-tr-xl">
+                    <div className="flex bg-secondary sm:rounded-tr-xl">
                         <Link className={getClassName("/temperature")} to="/temperature">
                             Temperature
                         </Link>
