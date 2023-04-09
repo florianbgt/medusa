@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -31,7 +32,20 @@ func isPasswordValid(password string) bool {
 	return true
 }
 
-func (p *Password) UpdatePassword(db *gorm.DB, password string) error {
+func HashPassword(password string, salt string) string {
+	b, err := bcrypt.GenerateFromPassword([]byte(password+salt), bcrypt.DefaultCost)
+	if err != nil {
+		panic(err)
+	}
+	return string(b)
+}
+
+func CheckPasswordHash(password string, salt string, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password+salt))
+	return err == nil
+}
+
+func (p *Password) UpdatePassword(db *gorm.DB, password string, apiKey string) error {
 	db.First(p)
 
 	if p.ID == 0 {
@@ -42,7 +56,7 @@ func (p *Password) UpdatePassword(db *gorm.DB, password string) error {
 		return errors.New("invalid_password")
 	}
 
-	p.Password = password
+	p.Password = HashPassword(password, apiKey)
 
 	db.Save(p)
 	return nil
@@ -58,7 +72,7 @@ func (p *Password) GetPassword(db *gorm.DB) (string, error) {
 	return p.Password, nil
 }
 
-func (p *Password) Setup(db *gorm.DB, password string) {
+func (p *Password) Setup(db *gorm.DB, password string, apiKey string) {
 	db.AutoMigrate(Password{})
 
 	db.First(p)
@@ -67,7 +81,7 @@ func (p *Password) Setup(db *gorm.DB, password string) {
 		if !isPasswordValid(password) {
 			panic("Password is not valid, must contains at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character")
 		}
-		p.Password = password
+		p.Password = HashPassword(password, apiKey)
 		db.Create(&p)
 	}
 }

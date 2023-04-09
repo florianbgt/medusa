@@ -16,7 +16,7 @@ func SetupDb(path string, configs *configs.Configs) *gorm.DB {
 	}
 
 	var passwordInstance password_model.Password
-	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD)
+	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
 
 	return db
 }

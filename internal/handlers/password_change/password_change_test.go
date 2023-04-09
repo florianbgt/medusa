@@ -3,7 +3,6 @@ package password_change_test
 import (
 	"bytes"
 	"encoding/json"
-	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/internal/models/password_model"
 	"florianbgt/medusa/test"
@@ -14,13 +13,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestLoginRoute(t *testing.T) {
+func TestPasswordChangeRoute(t *testing.T) {
 	api := test.SetupApi()
 	route := "/api/password/change"
 	db := test.Setupdb()
 
 	var passwordInstance password_model.Password
-	passwordInstance.Setup(db, "Password/123")
+
+	configs := test.SetupConfigs()
+
+	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
 
 	t.Run("change password", func(t *testing.T) {
 		type testCase struct {
@@ -39,7 +41,7 @@ func TestLoginRoute(t *testing.T) {
 			},
 			{
 				payload: map[string]string{
-					"old_password": configs.SetupConfigs().DEFAULT_PASSWORD,
+					"old_password": configs.DEFAULT_PASSWORD,
 					"password":     "Newpassword/123",
 					"password2":    "Newpassword/123",
 				},
@@ -59,7 +61,7 @@ func TestLoginRoute(t *testing.T) {
 			},
 			{
 				payload: map[string]string{
-					"old_password": configs.SetupConfigs().DEFAULT_PASSWORD,
+					"old_password": configs.DEFAULT_PASSWORD,
 					"password":     "Newpassword/123",
 					"password2":    "password2_does_not_match",
 				},
@@ -69,7 +71,7 @@ func TestLoginRoute(t *testing.T) {
 			},
 			{
 				payload: map[string]string{
-					"old_password": configs.SetupConfigs().DEFAULT_PASSWORD,
+					"old_password": configs.DEFAULT_PASSWORD,
 					"password":     "newpassword/123",
 					"password2":    "newpassword/123",
 				},
@@ -79,13 +81,13 @@ func TestLoginRoute(t *testing.T) {
 			},
 		} {
 			// reset password
-			passwordInstance.UpdatePassword(db, "Password/123")
+			passwordInstance.UpdatePassword(db, "Password/123", configs.API_KEY)
 
 			w := httptest.NewRecorder()
 
 			payload, _ := json.Marshal(scenario.payload)
 			body := bytes.NewBuffer(payload)
-			token_pair, _ := helpers.GenerateTokenPair(configs.SetupConfigs().API_KEY)
+			token_pair, _ := helpers.GenerateTokenPair(configs.API_KEY)
 
 			req, _ := http.NewRequest("POST", route, body)
 			req.Header = http.Header{

@@ -3,6 +3,7 @@ package login
 import (
 	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/helpers"
+	"florianbgt/medusa/internal/models/password_model"
 	"fmt"
 	"net/http"
 
@@ -27,7 +28,13 @@ func Login(
 		return
 	}
 
-	if payload.Password != configs.DEFAULT_PASSWORD {
+	var passwordInstance password_model.Password
+	currentPassword, err := passwordInstance.GetPassword(db)
+	if err != nil {
+		panic(err)
+	}
+
+	if !password_model.CheckPasswordHash(payload.Password, configs.API_KEY, currentPassword) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "password_incorrect",
 		})

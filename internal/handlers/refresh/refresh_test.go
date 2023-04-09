@@ -3,7 +3,6 @@ package refresh_test
 import (
 	"bytes"
 	"encoding/json"
-	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/helpers"
 	"florianbgt/medusa/test"
 	"net/http"
@@ -17,9 +16,9 @@ func TestRefreshTokenRoute(t *testing.T) {
 	api := test.SetupApi()
 	route := "/api/token/refresh"
 
-	api_key := configs.SetupConfigs().API_KEY
+	configs := test.SetupConfigs()
 
-	token_pair, _ := helpers.GenerateTokenPair(api_key)
+	token_pair, _ := helpers.GenerateTokenPair(configs.API_KEY)
 
 	t.Run("refresh token", func(t *testing.T) {
 		type testCase struct {

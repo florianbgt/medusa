@@ -33,13 +33,10 @@ func ChangePassword(
 
 	currentPassword, err := passwordInstance.GetPassword(db)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": err.Error(),
-		})
-		return
+		panic(err)
 	}
 
-	if currentPassword != payload.OldPassword {
+	if !password_model.CheckPasswordHash(payload.OldPassword, configs.API_KEY, currentPassword) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "old_password_incorrect",
 		})
@@ -53,7 +50,7 @@ func ChangePassword(
 		return
 	}
 
-	err = passwordInstance.UpdatePassword(db, payload.Password)
+	err = passwordInstance.UpdatePassword(db, payload.Password, configs.API_KEY)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

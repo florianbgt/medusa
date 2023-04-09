@@ -12,10 +12,13 @@ import (
 func TestPassword(t *testing.T) {
 	db := test.Setupdb()
 
+	configs := test.SetupConfigs()
+
 	var passwordInstance password_model.Password
 
-	passwordInstance.Setup(db, "Password/123")
 	t.Run("update password", func(t *testing.T) {
+		passwordInstance.Setup(db, "Password/123", configs.API_KEY)
+
 		type testCase struct {
 			password string
 			err      error
@@ -48,35 +51,17 @@ func TestPassword(t *testing.T) {
 			},
 		} {
 			// reset password before each run
-			passwordInstance.UpdatePassword(db, "Password/123")
+			passwordInstance.UpdatePassword(db, "Password/123", configs.API_KEY)
 
-			err := passwordInstance.UpdatePassword(db, scenario.password)
-
-			excpectedPassword := "Password/123"
-			if scenario.err == nil {
-				excpectedPassword = scenario.password
-			}
+			err := passwordInstance.UpdatePassword(db, scenario.password, configs.API_KEY)
 
 			assert.Equal(t, scenario.err, err)
-			assert.Equal(t, excpectedPassword, passwordInstance.Password)
+
+			if err == nil {
+				assert.True(t, password_model.CheckPasswordHash(scenario.password, configs.API_KEY, passwordInstance.Password))
+			} else {
+				assert.True(t, password_model.CheckPasswordHash("Password/123", configs.API_KEY, passwordInstance.Password))
+			}
 		}
-	})
-
-	t.Run("get password success", func(t *testing.T) {
-		passwordInstance.UpdatePassword(db, "Password/123")
-
-		password, err := passwordInstance.GetPassword(db)
-
-		assert.Equal(t, nil, err)
-		assert.Equal(t, "Password/123", password)
-	})
-
-	t.Run("get password fail", func(t *testing.T) {
-		db.Delete(&passwordInstance)
-
-		password, err := passwordInstance.GetPassword(db)
-
-		assert.Equal(t, nil, err)
-		assert.Equal(t, "Password/123", password)
 	})
 }

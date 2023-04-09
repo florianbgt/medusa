@@ -1,6 +1,7 @@
 bin
 medusa.db
 uploads
+medusa.KEY
 
 web/node_modules
 web/dist/

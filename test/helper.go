@@ -9,8 +9,18 @@ import (
 	"gorm.io/gorm"
 )
 
+func SetupConfigs() *configs.Configs {
+	return &configs.Configs{
+		PORT:             "8080",
+		API_KEY:          "API_KEY",
+		DEFAULT_PASSWORD: "Password/123",
+		ENABLE_CAMERA:    true,
+		CAMERA_NAME:      "/dev/video0",
+	}
+}
+
 func SetupApi() *gin.Engine {
-	configs := configs.SetupConfigs()
+	configs := SetupConfigs()
 
 	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
 	if err != nil {

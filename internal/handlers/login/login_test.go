@@ -3,7 +3,7 @@ package login_test
 import (
 	"bytes"
 	"encoding/json"
-	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/models/password_model"
 	"florianbgt/medusa/test"
 	"net/http"
 	"net/http/httptest"
@@ -15,6 +15,13 @@ import (
 func TestLoginRoute(t *testing.T) {
 	api := test.SetupApi()
 	route := "/api/login"
+	db := test.Setupdb()
+
+	var passwordInstance password_model.Password
+
+	configs := test.SetupConfigs()
+
+	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
 
 	t.Run("login", func(t *testing.T) {
 		type testCase struct {
@@ -33,7 +40,7 @@ func TestLoginRoute(t *testing.T) {
 			},
 			{
 				payload: map[string]string{
-					"password": configs.SetupConfigs().DEFAULT_PASSWORD,
+					"password": configs.DEFAULT_PASSWORD,
 				},
 				status:  http.StatusOK,
 				success: true,
@@ -48,6 +55,9 @@ func TestLoginRoute(t *testing.T) {
 				err:     "password_incorrect",
 			},
 		} {
+			// reset password
+			passwordInstance.UpdatePassword(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
+
 			w := httptest.NewRecorder()
 
 			payload, _ := json.Marshal(scenario.payload)
