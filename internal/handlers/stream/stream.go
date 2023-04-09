@@ -16,9 +16,9 @@ var (
 	Frames <-chan []byte
 )
 
-func SetupCamera() *device.Device {
+func SetupCamera(camaraName string) *device.Device {
 	camera, err := device.Open(
-		"/dev/video0",
+		camaraName,
 		device.WithPixFormat(v4l2.PixFormat{PixelFormat: v4l2.PixelFmtMJPEG, Width: 640, Height: 480}),
 	)
 	if err != nil {

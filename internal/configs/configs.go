@@ -31,8 +31,8 @@ type Configs struct {
 	PORT             string
 	API_KEY          string
 	DEFAULT_PASSWORD string
-	TOKEN_EXPIRATION int // in seconds
-	SQLITE_FILE_PATH string
+	ENABLE_CAMERA    bool
+	CAMERA_NAME      string
 }
 
 func SetupConfigs() *Configs {
@@ -40,7 +40,7 @@ func SetupConfigs() *Configs {
 		PORT:             getEnvString("PORT", "80"),
 		API_KEY:          getEnvString("API_KEY", "change-on-prod"),
 		DEFAULT_PASSWORD: getEnvString("PASSWORD", "Password/123"),
-		TOKEN_EXPIRATION: getEnvInt("TOKEN_EXPIRATION", 60*60),
-		SQLITE_FILE_PATH: getEnvString("SQLITE_FILE_PATH", "medusa.db"),
+		ENABLE_CAMERA:    getEnvInt("ENABLE_CAMERA", 1) == 1,
+		CAMERA_NAME:      getEnvString("CAMERA_NAME", "/dev/video0"),
 	}
 }

@@ -88,10 +88,14 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router.GET("api/system/metrics", isAuthenticated, system.SystemMetrics)
 
 	router.GET("api/stream", func(c *gin.Context) {
-		stream.Stream(
-			c,
-			configs.API_KEY,
-		)
+		if configs.ENABLE_CAMERA {
+			stream.Stream(
+				c,
+				configs.API_KEY,
+			)
+		} else {
+			c.AbortWithStatus(http.StatusNotFound)
+		}
 	})
 
 	router.GET("api/files", isAuthenticated, files.ListFiles)
