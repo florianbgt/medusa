@@ -79,10 +79,8 @@ func IsAuthCheck(c *gin.Context, api_key string) {
 
 	token, err := GetTokenFromHeader(auth_header)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"error": "unauthorized",
-		})
-		return
+		query := c.Request.URL.Query()
+		token = query.Get("token")
 	}
 
 	if !IsTokenValid(token, api_key) {

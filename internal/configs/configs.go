@@ -54,6 +54,7 @@ func getAPIKey() string {
 
 type Configs struct {
 	PORT             string
+	DEBUG            bool
 	API_KEY          string
 	DEFAULT_PASSWORD string
 	ENABLE_CAMERA    bool
@@ -63,6 +64,7 @@ type Configs struct {
 func SetupConfigs() *Configs {
 	return &Configs{
 		PORT:             getEnvString("PORT", "8080"),
+		DEBUG:            getEnvInt("DEBUG", 0) == 1,
 		API_KEY:          getAPIKey(),
 		DEFAULT_PASSWORD: getEnvString("PASSWORD", "Password/123"),
 		ENABLE_CAMERA:    getEnvInt("ENABLE_CAMERA", 1) == 1,

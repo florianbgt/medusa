@@ -36,9 +36,11 @@ func serveApp() gin.HandlerFunc {
 	}
 }
 
-func corsMiddleware() gin.HandlerFunc {
+func corsMiddleware(debug bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		if debug {
+			c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		}
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
@@ -54,7 +56,7 @@ func corsMiddleware() gin.HandlerFunc {
 func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router := gin.Default()
 
-	router.Use(corsMiddleware())
+	router.Use(corsMiddleware(configs.DEBUG))
 
 	isAuthenticated := func(c *gin.Context) {
 		helpers.IsAuthCheck(c, configs.API_KEY)
@@ -87,7 +89,7 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router.GET("api/system", isAuthenticated, system.SystemInfo)
 	router.GET("api/system/metrics", isAuthenticated, system.SystemMetrics)
 
-	router.GET("api/stream", func(c *gin.Context) {
+	router.GET("api/stream", isAuthenticated, func(c *gin.Context) {
 		if configs.ENABLE_CAMERA {
 			stream.Stream(
 				c,
@@ -101,6 +103,7 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router.GET("api/files", isAuthenticated, files.ListFiles)
 	router.POST("api/files", isAuthenticated, files.UploadFile)
 	router.DELETE("api/files/:name", isAuthenticated, files.DeleteFile)
+	router.GET("api/files/:name", isAuthenticated, files.GetGCode)
 
 	router.NoRoute(serveApp())
 

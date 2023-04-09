@@ -33,9 +33,7 @@ export default function Main() {
                             Gcode
                         </Link>
                     </div>
-                    <div className="flex flex-col p-1">
-                        <Outlet/>
-                    </div>
+                    <Outlet/>
                 </div>
             </div>
         </Page>

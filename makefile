@@ -23,7 +23,7 @@ server-run: app-build server-build
 	${api_output_dir}
 
 server-dev:
-	go run ${api_entry_point}
+	DEBUG=1 go run ${api_entry_point}
 
 server-test:
 	go test -count=1 ./...

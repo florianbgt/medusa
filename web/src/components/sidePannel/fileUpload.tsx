@@ -34,6 +34,7 @@ export default function FileUpload({onUploaded}: Props) {
         if (file) {
             uploadFile(file)
         }
+        e.target.value = ""
     }
 
     async function uploadFile(file: File) {

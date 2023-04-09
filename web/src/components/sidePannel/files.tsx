@@ -3,6 +3,7 @@ import Button from "../ui/button"
 import Section from "./section";
 import FileUpload from "./fileUpload";
 import { api } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 interface File{
     name: string
@@ -12,6 +13,8 @@ interface File{
 
 export default function Files() {
     const [files, setFiles] = useState<Array<File>>([])
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         fetchFiles()
@@ -50,6 +53,10 @@ export default function Files() {
             }
         }
 
+        function viewGCode() {
+            navigate(`/gcode?name=${encodeURIComponent(file.name)}`)
+        }
+
         return (
             <div className="flex flex-col gap-1">
                 <div className="text-primary text-xl font-bold">
@@ -69,7 +76,7 @@ export default function Files() {
                     <Button size="sm" color="primary" className="w-full">
                         Load
                     </Button>
-                    <Button size="sm" color="light" className="w-full">
+                    <Button onClick={viewGCode} size="sm" color="light" className="w-full">
                         View G-code
                     </Button>
                     <Button onClick={deleteFile} size="sm" color="accent" className="w-full">

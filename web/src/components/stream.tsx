@@ -7,7 +7,7 @@ export default function Stream() {
   // We need to trigger an api call to refresh the token if it is expired
   // Else, the image src will not load
   async function checkAuthenticated() {
-    await api({url: "/authenticated", method: "GET"})
+    await api({url: "/authenticated"})
     setAuthChecked(true)
   }
 

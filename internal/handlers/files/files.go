@@ -97,3 +97,17 @@ func UploadFile(c *gin.Context) {
 
 	c.JSON(http.StatusOK, nil)
 }
+
+func GetGCode(c *gin.Context) {
+	fileName := c.Param("name")
+
+	gcode, err := os.ReadFile(directory + fileName)
+	if os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{})
+		return
+	} else if err != nil {
+		panic(err)
+	}
+
+	c.Data(http.StatusOK, "text/plain", gcode)
+}

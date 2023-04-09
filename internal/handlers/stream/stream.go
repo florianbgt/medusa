@@ -1,7 +1,6 @@
 package stream
 
 import (
-	"florianbgt/medusa/internal/helpers"
 	"fmt"
 	"log"
 	"mime/multipart"
@@ -29,14 +28,6 @@ func SetupCamera(camaraName string) *device.Device {
 }
 
 func Stream(c *gin.Context, api_key string) {
-
-	query := c.Request.URL.Query()
-	token := query.Get("token")
-	if !helpers.IsTokenValid(token, api_key) {
-		c.JSON(401, gin.H{"error": "unauthorized"})
-		return
-	}
-
 	mimeWriter := multipart.NewWriter(c.Writer)
 	c.Writer.Header().Set("Content-Type", fmt.Sprintf("multipart/x-mixed-replace; boundary=%s", mimeWriter.Boundary()))
 	partHeader := make(textproto.MIMEHeader)
