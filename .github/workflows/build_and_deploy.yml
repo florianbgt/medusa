@@ -39,8 +39,9 @@ jobs:
       - name: Build go binaries for rasberry pi
         run: GOOS=linux GOARCH=arm GOARM=7 CGO_ENABLED=1 CC="zig cc -target arm-linux-musleabihf" CXX="zig c++ -target arm-linux-musleabihf" go build -v -o bin/medusa_pi ./cmd/medusa/main.go
 
-      - name: Deploy to github release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./bin/*
-          tag_name: latest
+      # TODO build not working on PI when done in CI
+      # - name: Deploy to github release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: ./bin/*
+      #     tag_name: latest
