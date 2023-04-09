@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const directory = "uploads/"
+const Directory = "uploads/"
 
 func renamePath(path string) string {
 	_, err := os.Open(path)
@@ -31,12 +31,12 @@ func renamePath(path string) string {
 }
 
 func readAllFiles() []os.DirEntry {
-	err := os.MkdirAll(directory, os.ModePerm)
+	err := os.MkdirAll(Directory, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 
-	files, err := os.ReadDir(directory)
+	files, err := os.ReadDir(Directory)
 	if err != nil {
 		panic(err)
 	}
@@ -73,7 +73,7 @@ func ListFiles(c *gin.Context) {
 
 func DeleteFile(c *gin.Context) {
 	fileName := c.Param("name")
-	err := os.Remove(directory + fileName)
+	err := os.Remove(Directory + fileName)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{})
 		return
@@ -91,7 +91,7 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 
-	path := renamePath(directory + uploadedFile.Filename)
+	path := renamePath(Directory + uploadedFile.Filename)
 
 	c.SaveUploadedFile(uploadedFile, path)
 
@@ -101,7 +101,7 @@ func UploadFile(c *gin.Context) {
 func GetGCode(c *gin.Context) {
 	fileName := c.Param("name")
 
-	gcode, err := os.ReadFile(directory + fileName)
+	gcode, err := os.ReadFile(Directory + fileName)
 	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{})
 		return
