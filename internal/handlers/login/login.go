@@ -50,8 +50,5 @@ func Login(
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"access_token":  token_pair.Access,
-		"refresh_token": token_pair.Refresh,
-	})
+	c.JSON(http.StatusOK, token_pair)
 }

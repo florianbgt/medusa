@@ -109,7 +109,8 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router.GET("api/files", isAuthenticated, files.ListFiles)
 	router.POST("api/files", isAuthenticated, files.UploadFile)
 	router.DELETE("api/files/:name", isAuthenticated, files.DeleteFile)
-	router.GET("api/files/:name", isAuthenticated, files.GetGCode)
+	router.GET("api/files/:name/gcode/info", isAuthenticated, files.GetGCodeInfo)
+	router.GET("api/files/:name/gcode", isAuthenticated, files.GetGCode)
 
 	router.NoRoute(serveApp())
 

@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 	"time"
@@ -12,8 +11,8 @@ import (
 )
 
 type TokenPair struct {
-	Access  string
-	Refresh string
+	Access  string `json:"access_token"`
+	Refresh string `json:"refresh_token"`
 }
 
 func GenerateTokenPair(api_key string) (TokenPair, error) {
@@ -66,12 +65,7 @@ func IsTokenValid(token string, api_key string) bool {
 		return []byte(api_key), nil
 	})
 
-	if err != nil {
-		fmt.Println(err)
-		return false
-	}
-
-	return true
+	return err == nil
 }
 
 func IsAuthCheck(c *gin.Context, api_key string) {

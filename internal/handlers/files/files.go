@@ -1,6 +1,7 @@
 package files
 
 import (
+	"bufio"
 	"errors"
 	"net/http"
 	"os"
@@ -12,6 +13,16 @@ import (
 )
 
 const Directory = "uploads/"
+
+type FileInfo struct {
+	FileName     string `json:"file_name"`
+	TotalTime    string `json:"total_time"`
+	FilamentUsed string `json:"filament_used"`
+	LayerHeight  string `json:"layer_height"`
+	LayerCount   string `json:"layer_count"`
+	NozzleTemp   string `json:"nozzle_temp"`
+	BedTemp      string `json:"bed_temp"`
+}
 
 func renameFile(name string) string {
 	extension := filepath.Ext(name)
@@ -33,7 +44,53 @@ func renameFile(name string) string {
 	}
 }
 
-func readAllFiles() []os.DirEntry {
+func getGCodeInfo(name string) (FileInfo, error) {
+	var fileInfo = FileInfo{
+		FileName: name,
+	}
+
+	file, err := os.Open(Directory + name)
+	if os.IsNotExist(err) {
+		return fileInfo, errors.New("file_not_found")
+	} else if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		valuesMap := map[string]*string{
+			";TIME:":           &fileInfo.TotalTime,
+			";Filament used: ": &fileInfo.FilamentUsed,
+			";Layer height: ":  &fileInfo.LayerHeight,
+			";LAYER_COUNT:":    &fileInfo.LayerCount,
+			"M104 S":           &fileInfo.NozzleTemp,
+			"M140 S":           &fileInfo.BedTemp,
+		}
+
+		for key, value := range valuesMap {
+			if *value == "" && strings.HasPrefix(line, key) {
+				*value = strings.TrimPrefix(line, key)
+			}
+		}
+
+		check := 0
+		for _, value := range valuesMap {
+			if *value != "" {
+				check += 1
+			}
+		}
+		if check == len(valuesMap) {
+			break
+		}
+	}
+
+	return fileInfo, nil
+}
+
+func ListFiles(c *gin.Context) {
 	err := os.MkdirAll(Directory, os.ModePerm)
 	if err != nil {
 		panic(err)
@@ -43,12 +100,6 @@ func readAllFiles() []os.DirEntry {
 	if err != nil {
 		panic(err)
 	}
-
-	return files
-}
-
-func ListFiles(c *gin.Context) {
-	files := readAllFiles()
 
 	type FileInfo struct {
 		Name     string `json:"name"`
@@ -77,7 +128,7 @@ func ListFiles(c *gin.Context) {
 func DeleteFile(c *gin.Context) {
 	fileName := c.Param("name")
 	err := os.Remove(Directory + fileName)
-	if err != os.ErrNotExist {
+	if os.IsNotExist(err) {
 		c.JSON(http.StatusNotFound, gin.H{})
 		return
 	}
@@ -116,4 +167,16 @@ func GetGCode(c *gin.Context) {
 	}
 
 	c.Data(http.StatusOK, "text/plain", gcode)
+}
+
+func GetGCodeInfo(c *gin.Context) {
+	fileName := c.Param("name")
+
+	fileInfo, err := getGCodeInfo(fileName)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{})
+		return
+	}
+
+	c.JSON(http.StatusOK, fileInfo)
 }
