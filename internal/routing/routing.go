@@ -54,6 +54,12 @@ func corsMiddleware(debug bool) gin.HandlerFunc {
 }
 
 func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
+	if configs.DEBUG {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.Default()
 
 	router.Use(corsMiddleware(configs.DEBUG))
