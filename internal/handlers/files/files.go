@@ -4,30 +4,33 @@ import (
 	"errors"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 const Directory = "uploads/"
 
-func renamePath(path string) string {
-	_, err := os.Open(path)
+func renameFile(name string) string {
+	extension := filepath.Ext(name)
+	baseName := strings.TrimSuffix(name, extension)
 
+	_, err := os.Open(Directory + name)
 	if errors.Is(err, os.ErrNotExist) {
-		return path
-	} else {
-		index := 0
-		for {
-			index++
-			_, err := os.Open(path + "_" + strconv.Itoa(index))
-			if errors.Is(err, os.ErrNotExist) {
-				break
-			}
-		}
-		path = path + "_" + strconv.Itoa(index)
+		return name
 	}
-	return path
+
+	index := 0
+	for {
+		index++
+		newName := baseName + "_" + strconv.Itoa(index) + extension
+		_, err := os.Open(Directory + newName)
+		if errors.Is(err, os.ErrNotExist) {
+			return newName
+		}
+	}
 }
 
 func readAllFiles() []os.DirEntry {
@@ -74,9 +77,12 @@ func ListFiles(c *gin.Context) {
 func DeleteFile(c *gin.Context) {
 	fileName := c.Param("name")
 	err := os.Remove(Directory + fileName)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{})
+	if err != os.ErrNotExist {
+		c.JSON(http.StatusNotFound, gin.H{})
 		return
+	}
+	if err != nil {
+		panic(err)
 	}
 
 	c.JSON(http.StatusOK, nil)
@@ -91,9 +97,9 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 
-	path := renamePath(Directory + uploadedFile.Filename)
+	name := renameFile(uploadedFile.Filename)
 
-	c.SaveUploadedFile(uploadedFile, path)
+	c.SaveUploadedFile(uploadedFile, Directory+name)
 
 	c.JSON(http.StatusOK, nil)
 }
