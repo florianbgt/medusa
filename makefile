@@ -18,7 +18,7 @@ server-run: app-build server-build
 	bin/medusa
 
 server-dev:
-	DEBUG=1 air
+	DEBUG=1 go run cmd/medusa/main.go
 
 server-test:
 	go test -count=1 ./...
