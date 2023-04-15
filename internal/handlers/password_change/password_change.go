@@ -29,9 +29,9 @@ func ChangePassword(
 		return
 	}
 
-	var passwordInstance password_model.Password
+	var Password password_model.Password
 
-	currentPassword, err := passwordInstance.GetPassword(db)
+	currentPassword, err := Password.GetPassword(db)
 	if err != nil {
 		panic(err)
 	}
@@ -50,7 +50,7 @@ func ChangePassword(
 		return
 	}
 
-	err = passwordInstance.UpdatePassword(db, payload.Password, configs.API_KEY)
+	err = Password.UpdatePassword(db, payload.Password, configs.API_KEY)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),

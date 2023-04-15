@@ -6,7 +6,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button({ color, size, pill, className, children, ...rest }: ButtonProps) {
     const colorClasses = {
-        primary: 'bg-primary hover:bg-primary/50 text-light',
+        primary: 'bg-primary hover:bg-primary/50 disabled:bg-primary/25 text-light',
         secondary: 'bg-secondary hover:bg-secondary/50 text-light',
         accent: 'bg-accent hover:bg-accent/50 text-light',
         light: 'bg-light hover:bg-light/50 text-dark',
@@ -25,7 +25,7 @@ export default function Button({ color, size, pill, className, children, ...rest
     const rounded = pill ? 'rounded-full' : 'rounded'
 
     return (
-        <button {...rest} className={`${colorClasses} ${sizeClasses} ${rounded} font-bold  ${className}`}>
+        <button {...rest} className={`${colorClasses} ${sizeClasses} ${rounded} font-bold ${className}`}>
             {children}
         </button>
     )

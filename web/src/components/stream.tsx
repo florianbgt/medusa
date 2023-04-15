@@ -22,14 +22,12 @@ export default function Stream() {
   return (
     <>
       {authChecked && (
-        <>
-          <img
-            className="scale-x-[-1]"
-            width={10000}
-            alt="stream"
-            src={streamUrl}
-          />
-        </>
+        <img
+          className="scale-x-[-1]"
+          width={10000}
+          alt="stream"
+          src={streamUrl}
+        />
       )}
     </>
   );

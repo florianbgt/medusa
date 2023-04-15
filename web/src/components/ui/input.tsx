@@ -1,18 +1,20 @@
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     id: string
-    label: string
+    label?: string
     elRef?: React.Ref<HTMLInputElement>
 }
 
 export default function Input({ id, label, className, elRef, ...rest }: InputProps) {
     return (
         <div className={className}>
-            <label
-                htmlFor={id}
-                className="block mb-2 text-sm font-bold text-light"
-            >
-                {label}
-            </label>
+            {label && (
+                <label
+                    htmlFor={id}
+                    className="block mb-2 text-sm font-bold text-light"
+                >
+                    {label}
+                </label>
+            )}
             <input
                 ref={elRef}
                 id={id}

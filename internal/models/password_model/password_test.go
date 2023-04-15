@@ -14,10 +14,10 @@ func TestPassword(t *testing.T) {
 
 	configs := test.SetupConfigs()
 
-	var passwordInstance password_model.Password
+	var Password password_model.Password
 
 	t.Run("update password", func(t *testing.T) {
-		passwordInstance.Setup(db, "Password/123", configs.API_KEY)
+		Password.Setup(db, "Password/123", configs.API_KEY)
 
 		type testCase struct {
 			password string
@@ -51,16 +51,16 @@ func TestPassword(t *testing.T) {
 			},
 		} {
 			// reset password before each run
-			passwordInstance.UpdatePassword(db, "Password/123", configs.API_KEY)
+			Password.UpdatePassword(db, "Password/123", configs.API_KEY)
 
-			err := passwordInstance.UpdatePassword(db, scenario.password, configs.API_KEY)
+			err := Password.UpdatePassword(db, scenario.password, configs.API_KEY)
 
 			assert.Equal(t, scenario.err, err)
 
 			if err == nil {
-				assert.True(t, password_model.CheckPasswordHash(scenario.password, configs.API_KEY, passwordInstance.Password))
+				assert.True(t, password_model.CheckPasswordHash(scenario.password, configs.API_KEY, Password.Password))
 			} else {
-				assert.True(t, password_model.CheckPasswordHash("Password/123", configs.API_KEY, passwordInstance.Password))
+				assert.True(t, password_model.CheckPasswordHash("Password/123", configs.API_KEY, Password.Password))
 			}
 		}
 	})

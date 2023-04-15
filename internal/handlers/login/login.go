@@ -28,8 +28,8 @@ func Login(
 		return
 	}
 
-	var passwordInstance password_model.Password
-	currentPassword, err := passwordInstance.GetPassword(db)
+	var Password password_model.Password
+	currentPassword, err := Password.GetPassword(db)
 	if err != nil {
 		panic(err)
 	}

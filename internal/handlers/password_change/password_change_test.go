@@ -18,11 +18,11 @@ func TestPasswordChangeRoute(t *testing.T) {
 	route := "/api/password/change"
 	db := test.Setupdb()
 
-	var passwordInstance password_model.Password
+	var Password password_model.Password
 
 	configs := test.SetupConfigs()
 
-	passwordInstance.Setup(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
+	Password.Setup(db, configs.DEFAULT_PASSWORD, configs.API_KEY)
 
 	t.Run("change password", func(t *testing.T) {
 		type testCase struct {
@@ -81,7 +81,7 @@ func TestPasswordChangeRoute(t *testing.T) {
 			},
 		} {
 			// reset password
-			passwordInstance.UpdatePassword(db, "Password/123", configs.API_KEY)
+			Password.UpdatePassword(db, "Password/123", configs.API_KEY)
 
 			w := httptest.NewRecorder()
 
