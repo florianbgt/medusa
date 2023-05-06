@@ -4,6 +4,7 @@ import (
 	"context"
 	"florianbgt/medusa/internal/configs"
 	"florianbgt/medusa/internal/db"
+	"florianbgt/medusa/internal/gcode"
 	"florianbgt/medusa/internal/handlers/stream"
 	"florianbgt/medusa/internal/routing"
 )
@@ -26,7 +27,9 @@ func main() {
 		stream.Frames = camera.GetOutput()
 	}
 
-	router := routing.SetupRouter(db, configs)
+	gcodeSender := gcode.NewGCodeSender(configs.PRINTER_NAME, configs.PRINTER_BAUD)
+
+	router := routing.SetupRouter(db, configs, gcodeSender)
 
 	router.Run(":" + configs.PORT)
 }

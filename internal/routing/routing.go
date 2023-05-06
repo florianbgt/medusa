@@ -2,7 +2,9 @@ package routing
 
 import (
 	"florianbgt/medusa/internal/configs"
+	"florianbgt/medusa/internal/gcode"
 	"florianbgt/medusa/internal/handlers/checks"
+	"florianbgt/medusa/internal/handlers/control"
 	"florianbgt/medusa/internal/handlers/files"
 	"florianbgt/medusa/internal/handlers/login"
 	"florianbgt/medusa/internal/handlers/password_change"
@@ -53,7 +55,7 @@ func corsMiddleware(debug bool) gin.HandlerFunc {
 	}
 }
 
-func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
+func SetupRouter(db *gorm.DB, configs *configs.Configs, gcodeSender *gcode.GCodeSender) *gin.Engine {
 	if configs.DEBUG {
 		gin.SetMode(gin.DebugMode)
 	} else {
@@ -111,6 +113,37 @@ func SetupRouter(db *gorm.DB, configs *configs.Configs) *gin.Engine {
 	router.DELETE("api/files/:name", isAuthenticated, files.DeleteFile)
 	router.GET("api/files/:name/gcode/info", isAuthenticated, files.GetGCodeInfo)
 	router.GET("api/files/:name/gcode", isAuthenticated, files.GetGCode)
+
+	router.POST("api/control/move", func(c *gin.Context) {
+		control.Move(
+			c,
+			gcodeSender,
+		)
+	})
+	router.POST("api/control/home", func(c *gin.Context) {
+		control.Home(
+			c,
+			gcodeSender,
+		)
+	})
+	router.POST("api/control/level", func(c *gin.Context) {
+		control.Level(
+			c,
+			gcodeSender,
+		)
+	})
+	router.POST("api/control/extrude", func(c *gin.Context) {
+		control.Extrude(
+			c,
+			gcodeSender,
+		)
+	})
+	router.GET("api/control/temperatures", func(c *gin.Context) {
+		control.GetTemperatures(
+			c,
+			gcodeSender,
+		)
+	})
 
 	router.NoRoute(serveApp())
 

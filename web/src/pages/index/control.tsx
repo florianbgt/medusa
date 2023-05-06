@@ -2,36 +2,51 @@ import { useState } from "react"
 import Stream from "../../components/stream"
 import Button from "../../components/ui/button"
 import Input from "../../components/ui/input"
+import { api } from "../../api"
 
 export default function Control() {
     const [loading, setLoading] = useState<boolean>(false)
     const [asisStep, setAxisStep] = useState<0.1 | 1 | 10 | 100>(0.1)
     const [extruderStep, setExtruderStep] = useState<number| 1 | 10 | 100>(0.1)
 
-    type move = {x: number, y: number, z: number, e: number}
-
-    async function sendGCode({x, y, z, e}: move) {
+    async function move({x, y, z}: {x: number, y: number, z: number}) {
         setLoading(true)
         try {
-            // TODO implement call
-            console.log(x, y, z, e)
+            await api({url: "/control/move", method: "POST", data: {x, y, z}})
         } catch (error) {
-            // TODO handle error
+            throw error
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function extrude(e: number) {
+        setLoading(true)
+        try {
+            await api({url: "/control/extrude", method: "POST", data: {e: e}})
+        } catch (error) {
+            throw error
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    async function goHome() {
+        setLoading(true)
+        try {
+            await api({url: "/control/home", method: "POST"})
+        } catch (error) {
             throw error
         } finally {
             setInterval(() => setLoading(false), 500)
         }
     }
 
-    type home = {x: boolean, y: boolean, z: boolean}
-
-    async function goHome({x, y, z}: home) {
+    async function autoLevel() {
         setLoading(true)
         try {
-            // TODO implement call
-            console.log(x, y, z)
+            await api({url: "/control/level", method: "POST"})
         } catch (error) {
-            // TODO handle error
             throw error
         } finally {
             setInterval(() => setLoading(false), 500)
@@ -45,7 +60,7 @@ export default function Control() {
                 <div className="grid grid-cols-3 gap-2">
                     <div/>
                     <Button
-                        onClick={() => sendGCode({x: 0, y: asisStep, z: 0, e: 0})}
+                        onClick={() => move({x: 0, y: asisStep, z: 0})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -56,7 +71,7 @@ export default function Control() {
                     </Button>
                     <div/>
                     <Button
-                        onClick={() => sendGCode({x: -asisStep, y: 0, z: 0, e: 0})}
+                        onClick={() => move({x: -asisStep, y: 0, z: 0})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -66,7 +81,7 @@ export default function Control() {
                         </svg>
                     </Button>
                     <Button
-                        onClick={() => goHome({x: true, y: true, z: false})}
+                        onClick={() => goHome()}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -76,7 +91,7 @@ export default function Control() {
                         </svg>
                     </Button>
                     <Button
-                        onClick={() => sendGCode({x: asisStep, y: 0, z: 0, e: 0})}
+                        onClick={() => move({x: asisStep, y: 0, z: 0})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -87,7 +102,7 @@ export default function Control() {
                     </Button>
                     <div/>
                     <Button
-                        onClick={() => sendGCode({x: 0, y: -asisStep, z: 0, e: 0})}
+                        onClick={() => move({x: 0, y: -asisStep, z: 0})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -100,7 +115,7 @@ export default function Control() {
                 </div>
                 <div className="grid grid-cols-1 gap-2">
                     <Button
-                        onClick={() => sendGCode({x: 0, y: 0, z: asisStep, e: 0})}
+                        onClick={() => move({x: 0, y: 0, z: asisStep})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -110,17 +125,26 @@ export default function Control() {
                         </svg>       
                     </Button>
                     <Button
-                        onClick={() => goHome({x: false, y: false, z: true})}
+                        onClick={() => autoLevel()}
                         color="primary"
                         size="sm"
                         disabled={loading}
                     >
-                        <svg width="50px" height="50px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#f5f5f5" d="M512 128 128 447.936V896h255.936V640H640v256h255.936V447.936z"/>
+                        <svg fill="#f5f5f5" xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 360.177 360.177">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="M0,144.308v71.561h360.177v-71.561H0z M238.05,175.241c0,1.483-1.197,2.688-2.688,2.688H131.647 c-1.483,0-2.688-1.205-2.688-2.688v-22.798c0-1.483,1.205-2.688,2.688-2.688h103.714c1.491,0,2.688,1.205,2.688,2.688V175.241z"/>
+                                <rect x="167.387" y="155.131" width="29.958" height="17.422"/>
+                                <rect x="202.721" y="155.131" width="29.953" height="17.422"/>
+                                <rect x="134.334" y="155.131" width="27.678" height="17.422"/>
+                            </g>
                         </svg>
+                        {/* <svg width="50px" height="50px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#f5f5f5" d="M512 128 128 447.936V896h255.936V640H640v256h255.936V447.936z"/>
+                        </svg> */}
                     </Button>
                     <Button
-                        onClick={() => sendGCode({x: 0, y: 0, z: -asisStep, e: 0})}
+                        onClick={() => move({x: 0, y: 0, z: -asisStep})}
                         color="primary"
                         size="sm"
                         disabled={loading}
@@ -183,7 +207,7 @@ export default function Control() {
                         />
                     </div>
                     <Button
-                        onClick={() => sendGCode({x: 0, y: 0, z: 0, e: extruderStep})}
+                        onClick={() => extrude(extruderStep)}
                         color="primary"
                         size="md"
                         disabled={loading}
@@ -191,7 +215,7 @@ export default function Control() {
                         Extrude
                     </Button>
                     <Button
-                        onClick={() => sendGCode({x: 0, y: 0, z: 0, e: -extruderStep})}
+                        onClick={() => extrude(-extruderStep)}
                         color="primary"
                         size="md"
                         disabled={loading}

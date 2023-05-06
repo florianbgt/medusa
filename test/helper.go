@@ -16,6 +16,13 @@ func SetupConfigs() *configs.Configs {
 		DEFAULT_PASSWORD: "Password/123",
 		ENABLE_CAMERA:    true,
 		CAMERA_NAME:      "/dev/video0",
+		PRINTER_NAME:     "/dev/ttyUSB0",
+		PRINTER_MIN_X:    0,
+		PRINTER_MAX_X:    200,
+		PRINTER_MIN_Y:    0,
+		PRINTER_MAX_Y:    200,
+		PRINTER_MIN_Z:    0,
+		PRINTER_MAX_Z:    200,
 	}
 }
 
@@ -27,7 +34,7 @@ func SetupApi() *gin.Engine {
 		panic("failed to connect database")
 	}
 
-	router := routing.SetupRouter(db, configs)
+	router := routing.SetupRouter(db, configs, nil)
 
 	return router
 }
